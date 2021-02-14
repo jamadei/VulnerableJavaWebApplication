@@ -1,4 +1,4 @@
-package com.github.rafaelrpinto.vulnerablejavawebapp.controller;
+package com.github.vulnerablejavawebapp.controller;
 
 import java.util.logging.Logger;
 
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.github.rafaelrpinto.vulnerablejavawebapp.model.User;
-import com.github.rafaelrpinto.vulnerablejavawebapp.repository.UserRepository;
+import com.github.vulnerablejavawebapp.model.User;
+import com.github.vulnerablejavawebapp.repository.UserRepository;
 
 /**
  * 

@@ -1,4 +1,4 @@
-package com.github.rafaelrpinto.vulnerablejavawebapp.config;
+package com.github.vulnerablejavawebapp.config;
 
 import java.util.Collections;
 
@@ -28,8 +28,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  * @author Rafael
  *
  */
-@ComponentScan(basePackages = { "com.github.rafaelrpinto.vulnerablejavawebapp.controller",
-		"com.github.rafaelrpinto.vulnerablejavawebapp.repository" })
+@ComponentScan(basePackages = { "com.github.vulnerablejavawebapp.controller",
+		"com.github.vulnerablejavawebapp.repository" })
 @EnableAutoConfiguration
 public class AppLauncher {
 

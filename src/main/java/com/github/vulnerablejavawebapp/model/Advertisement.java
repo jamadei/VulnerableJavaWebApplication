@@ -1,4 +1,4 @@
-package com.github.rafaelrpinto.vulnerablejavawebapp.model;
+package com.github.vulnerablejavawebapp.model;
 
 import java.io.Serializable;
 import java.util.Date;
