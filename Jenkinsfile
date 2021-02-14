@@ -16,7 +16,7 @@ pipeline {
         }
 		stage('execute') {
              steps {
-               sh "docker build -t vjwwaa && docker run -dp 9090:9090 vjwwaa"
+               sh "docker build -t vjwwaa . && docker run -dp 9090:9090 vjwwaa"
              }
         }
     }
