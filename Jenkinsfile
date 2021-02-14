@@ -17,7 +17,7 @@ pipeline {
 		stage('execute') {
              steps {
 				sh " echo $USER "
-               sh "docker build -t vjwwaa . && docker run -dp 9090:9090 vjwwaa"
+                sh "cp target/vulnerablejavawebapp-0.0.1-SNAPSHOT.jar . &&docker build -t vjwwaa . && docker run -dp 9090:9090 vjwwaa"
              }
         }
     }
