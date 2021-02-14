@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                mvn 'clean package -DskipTests'
+                mvn 'clean install -DskipTests'
             }
         }
 
@@ -16,8 +16,8 @@ pipeline {
         }
 		stage('execute') {
              steps {
-               sh "nohup java -jar target/vulnerablejavawebapp-0.0.1-SNAPSHOT.jar &"
-              }
+               sh "docker build -t VJWA:0.1 && docker run -dp 9090:9090 VJWA:0.1"
+             }
         }
     }
 }
