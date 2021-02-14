@@ -16,7 +16,7 @@ pipeline {
         }
 		stage('execute') {
              steps {
-               sh "pwd"
+               sh "nohup java -jar target/vulnerablejavawebapp-0.0.1-SNAPSHOT.jar &"
               }
         }
     }
