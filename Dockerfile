@@ -1,5 +1,5 @@
 # JDK 8 + Maven 3.3.9 
-FROM openjdk:11-alpine
+FROM openjdk:11-jre-slim
 
 # Prepare the folder
 RUN mkdir -p /app
