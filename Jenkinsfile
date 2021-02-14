@@ -14,6 +14,11 @@ pipeline {
 
             }
         }
+		stage('Test with snyk') {
+             steps {
+               snykSecurity snykInstallation: 'Snyk1', snykTokenId: 'Snyk_token' 
+              }
+        }
     }
 }
 
