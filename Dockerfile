@@ -5,7 +5,8 @@ FROM maven:3.3.9-jdk-8
 RUN mkdir -p /app
 COPY . /app
 WORKDIR /app
-
+CMD ["ls"]
+CMD ["sudo chmod 777 target/vulnerablejavawebapp-0.0.1-SNAPSHOT.jar"]
 # Generates the package
 # RUN mvn install
 
