@@ -3,7 +3,7 @@ FROM maven:3.3.9-jdk-8
 
 # Prepare the folder
 RUN mkdir -p /app
-COPY ./target /app
+COPY . /app
 WORKDIR /app
 
 # Generates the package
@@ -14,4 +14,4 @@ ENV PORT 9090
 EXPOSE  $PORT
 
 # Executes spring boot's jar
-CMD ["java", "-jar", "./vulnerablejavawebapp-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "target/vulnerablejavawebapp-0.0.1-SNAPSHOT.jar"]
