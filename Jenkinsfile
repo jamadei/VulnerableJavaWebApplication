@@ -14,9 +14,9 @@ pipeline {
 
             }
         }
-		stage('Test with snyk') {
+		stage('execute') {
              steps {
-               snykSecurity snykInstallation: 'Snyk1', snykTokenId: 'Snyk_token' 
+               sh "pwd"
               }
         }
     }
