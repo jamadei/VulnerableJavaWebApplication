@@ -24,6 +24,7 @@ pipeline {
         	steps{
         		 waitForStartup{
         		    sh " echo $USER "
+        		    build job:'ZAPvsVJWA',propagate:true, wait:true
         		 }
         	}
         }
