@@ -26,6 +26,11 @@ pipeline {
         		 }
         	}
         }
+        stage('Arachni Dynamic Test') {
+        	steps{
+        		arachniScanner checks: '*', format: 'html', url: 'http://192.168.33.10:9090'
+        	}
+        }
     }
 }
 
