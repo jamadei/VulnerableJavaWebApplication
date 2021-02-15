@@ -8,23 +8,21 @@ pipeline {
             }
         }
 
-        stage('Unit Test') {
+        stage('App Internal Test') {
             steps {
                 mvn 'test'
 
             }
         }
-		stage('execute') {
+		stage('Deploy to Docker Container') {
              steps {
-				
-                sh "cp target/vulnerablejavawebapp-0.0.1-SNAPSHOT.jar . &&docker build -t vjwwaa . && docker run -dp 9090:9090 vjwwaa"
+				 sh "cp target/vulnerablejavawebapp-0.0.1-SNAPSHOT.jar . &&docker build -t vjwwaa . && docker run -dp 9090:9090 vjwwaa"
              }
         }
-        stage ('dast'){
+        stage ('ZAP Dynamic Test'){
         	steps{
         		 waitForStartup{
-        		    sh " echo $USER "
-        		    build job:'ZAPvsVJWA',propagate:true, wait:true
+        		     build job:'ZAPvsVJWA',propagate:true, wait:true
         		 }
         	}
         }
