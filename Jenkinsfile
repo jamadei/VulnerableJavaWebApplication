@@ -32,9 +32,9 @@ pipeline {
 
 
 def waitForStartup(body) {
-   timeout(time: 2, unit: 'MINUTES') {
-    body()
-   } 
+   sleep time:3, unit: 'MINUTES'
+   body()
+
 }
 
 def mvn(def args) {
