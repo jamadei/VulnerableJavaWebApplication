@@ -27,12 +27,11 @@ pipeline {
 					}
 				}
 			}
-	        stage ('Startup Arachni Docker Container ')
+	        stage ('Startup Arachni Docker Container '){
 	        	steps{
 	        		startupArachni()
 	        	} 
-	        
-	  		}
+	        }
   		}
         stage('Arachni Dynamic Test') {
         	steps{
