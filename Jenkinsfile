@@ -19,13 +19,22 @@ pipeline {
 				 sh "cp target/vulnerablejavawebapp-0.0.1-SNAPSHOT.jar . &&docker build -t vjwwaa . && docker run -dp 9090:9090 vjwwaa"
              }
         }
+        parallel {
         stage ('ZAP Dynamic Test'){
         	steps{
+        	
         		 waitForStartup{
         		     build job:'ZAPvsVJWA',propagate:true, wait:true
         		 }
         	}
-        }
+        
+	        stage ('Startup Arachni Docker Container ')
+	        	steps{startupArachni()){
+	        		startupArachni()
+	        	} 
+	        
+	  		}
+  		}
         stage('Arachni Dynamic Test') {
         	steps{
         		 arachniScanner checks: '*', format: 'html', scope: [excludePathPattern: '', pageLimit: '3'], url: 'http://192.168.33.10:9090', userConfig:[filename: '/vagrant/conf.json']
@@ -34,6 +43,16 @@ pipeline {
     }
 }
 
+
+def startupArachni() {
+   sh 'docker run -d \
+   -p 222:22 \
+   -p 7331:7331 \
+   -p 9292:9292 \
+   --name arachni \
+  arachni/arachni:latest'
+
+}
 
 def waitForStartup(body) {
    sleep time:3, unit: 'MINUTES'
