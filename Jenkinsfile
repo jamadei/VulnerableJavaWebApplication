@@ -22,14 +22,13 @@ pipeline {
         parallel {
         stage ('ZAP Dynamic Test'){
         	steps{
-        	
         		 waitForStartup{
         		     build job:'ZAPvsVJWA',propagate:true, wait:true
         		 }
         	}
         
 	        stage ('Startup Arachni Docker Container ')
-	        	steps{startupArachni()){
+	        	steps{
 	        		startupArachni()
 	        	} 
 	        
