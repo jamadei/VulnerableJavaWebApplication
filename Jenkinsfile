@@ -30,7 +30,8 @@ pipeline {
 				}
 				stage ('Startup Arachni Docker Container '){
 					steps{
-						startupArachni()
+						def id=startupArachni()
+						echo id
 					} 
 				}
 			}
@@ -45,7 +46,8 @@ pipeline {
 
 
 def startupArachni() {
-   sh 'docker start arachni'
+   sh 'docker start arachni > result'
+   return readFile('result').split("\r?\n")
 
 }
 
