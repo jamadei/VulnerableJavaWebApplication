@@ -1,3 +1,4 @@
+def idArachniContainer
 pipeline {
     agent any
 
@@ -30,8 +31,10 @@ pipeline {
 				}
 				stage ('Startup Arachni Docker Container '){
 					steps{
-						def id=startupArachni()
-						echo id
+						script{
+							idArachniContainer=startupArachni()
+							echo idArachniContainer
+						}
 					} 
 				}
 			}
