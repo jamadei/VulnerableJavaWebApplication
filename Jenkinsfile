@@ -30,9 +30,7 @@ pipeline {
 				}
 				stage ('Startup Arachni Docker Container '){
 					steps{
-						script{
-							startupArachni()
-						}
+						startupArachni()
 					} 
 				}
 			}
