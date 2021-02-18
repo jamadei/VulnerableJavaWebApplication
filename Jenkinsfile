@@ -1,4 +1,3 @@
-def idArachniContainer
 pipeline {
     agent any
 
@@ -32,8 +31,7 @@ pipeline {
 				stage ('Startup Arachni Docker Container '){
 					steps{
 						script{
-							idArachniContainer=startupArachni()
-							echo idArachniContainer
+							startupArachni()
 						}
 					} 
 				}
@@ -45,13 +43,20 @@ pipeline {
         	}
         }
     }
+	post{ 
+        always {
+            stopArachni() 
+        }
+    }
 }
 
 
 def startupArachni() {
-   sh 'docker start arachni > result'
-   return readFile('result').split("\r?\n")
+   sh 'docker start arachni'
+}
 
+def stopArachni(){
+	sh 'docker stop $(docker ps -a -q --filter ancestor="arachni/arachni" --format="{{.ID}}")'
 }
 
 def waitForStartup(body) {
