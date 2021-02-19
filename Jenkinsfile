@@ -16,7 +16,10 @@ pipeline {
         }
 		stage('Test with snyk') {
              steps {
-               snykSecurity snykInstallation: 'Snyk1', snykTokenId: 'Snyk_token' 
+		     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')
+                       {
+                         snykSecurity snykInstallation: 'Snyk1', snykTokenId: 'Snyk_token' 
+		       }
               }
         }
     }
