@@ -7,20 +7,23 @@ pipeline {
                 mvn 'clean install -DskipTests'
             }
         }
-
         stage('Unit Test') {
             steps {
                 mvn 'test'
-
             }
         }
-		stage('Test with snyk') {
+	stage('Test with snyk') {
              steps {
 		     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')
                        {
                          snykSecurity snykInstallation: 'Snyk1', snykTokenId: 'Snyk_token' 
 		       }
               }
+        }
+	stage('Continue after errors') {
+            steps {
+                sh 'echo stop here'
+            }
         }
     }
 }
