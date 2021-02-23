@@ -23,17 +23,15 @@ pipeline {
 		
 		stage('ZAP scan') {
 			steps{
-				waitForStartup{
-					build job:'ZAPvsVJWA',propagate:true, wait:true
+				sleep time:3, unit: 'MINUTES'
+				build job:'ZAPvsVJWA',propagate:true, wait:true
 				}
-			}
 		}
 			
 		stage('Arachni Dynamic Test') {
         	steps{
-			  waitForStartup{
+			     sleep time:1, unit: 'MINUTES'
         		 arachniScanner checks: '*', format: 'html', scope: [excludePathPattern: '', pageLimit: '10'], url: 'http://192.168.33.10:9090', userConfig:[filename: '/vagrant/conf.json']
-			  }
 			}
         }
     }
@@ -43,17 +41,6 @@ pipeline {
         }
     }*/
 }
-
-
-def startupArachni() {
-   sh 'docker start arachni ||  docker run -d \
-   -p 222:22 \
-   -p 7331:7331 \
-   -p 9292:9292 \
-   --name arachni \
-  arachni/arachni:latest   '
-}
-
 
 
 def mvn(def args) {
@@ -76,8 +63,4 @@ def mvn(def args) {
 }
 
 
-def waitForStartup(body) {
-   sleep time:3, unit: 'MINUTES'
-   body()
 
-}
