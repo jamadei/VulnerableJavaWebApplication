@@ -7,60 +7,25 @@ pipeline {
                 mvn 'clean install -DskipTests'
             }
         }
-
-        stage('App Internal Test') {
+        stage('Unit Test') {
             steps {
                 mvn 'test'
-
             }
         }
-		stage('Deploy to Docker Container') {
+	stage('Test with snyk') {
              steps {
-				 sh "cp target/vulnerablejavawebapp-0.0.1-SNAPSHOT.jar . &&docker build -t vjwwaa . && docker run -dp 9090:9090 vjwwaa"
-             }
+		     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')
+                       {
+                         snykSecurity snykInstallation: 'Snyk1', snykTokenId: 'Snyk_token' 
+		       }
+              }
         }
-		stage('ZAP & Prepare for Arachni scan') {
-			parallel {
-				stage ('ZAP Dynamic Test'){
-					steps{
-						waitForStartup{
-						 build job:'ZAPvsVJWA',propagate:true, wait:true
-						}
-					}
-				}
-				stage ('Startup Arachni Docker Container '){
-					steps{
-						startupArachni()
-					} 
-				}
-			}
-		}
-        stage('Arachni Dynamic Test') {
-        	steps{
-        		 arachniScanner checks: '*', format: 'html', scope: [excludePathPattern: '', pageLimit: '3'], url: 'http://192.168.33.10:9090', userConfig:[filename: '/vagrant/conf.json']
-        	}
+	stage('Continue after errors') {
+            steps {
+                sh 'echo stop here'
+            }
         }
     }
-	post{ 
-        always {
-            stopArachni() 
-        }
-    }
-}
-
-
-def startupArachni() {
-   sh 'docker start arachni'
-}
-
-def stopArachni(){
-	sh 'docker stop $(docker ps -a -q --filter ancestor="arachni/arachni" --format="{{.ID}}")'
-}
-
-def waitForStartup(body) {
-   sleep time:3, unit: 'MINUTES'
-   body()
-
 }
 
 def mvn(def args) {
@@ -78,7 +43,6 @@ def mvn(def args) {
     // Advice: don't define M2_HOME in general. Maven will autodetect its root fine.
     // See also
     // https://github.com/jenkinsci/pipeline-examples/blob/master/pipeline-examples/maven-and-jdk-specific-version/mavenAndJdkSpecificVersion.groovy
-    withEnv(["JAVA_HOME=${javaHome}", "PATH+MAVEN=${mvnHome}/bin:${env.JAVA_HOME}/bin"]) {
-        sh "${mvnHome}/bin/mvn ${args} --batch-mode -V -U -e -Dsurefire.useFile=false"
-    }
+    sh "${mvnHome}/bin/mvn ${args} --batch-mode -V -U -e -Dsurefire.useFile=false"
+    
 }
