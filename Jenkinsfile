@@ -31,8 +31,10 @@ pipeline {
 			
 		stage('Arachni Dynamic Test') {
         	steps{
-        		 arachniScanner checks: '*', format: 'html', scope: [excludePathPattern: '', pageLimit: '3'], url: 'http://192.168.33.10:9090', userConfig:[filename: '/vagrant/conf.json']
-        	}
+			  waitForStartup{
+        		 arachniScanner checks: '*', format: 'html', scope: [excludePathPattern: '', pageLimit: '10'], url: 'http://192.168.33.10:9090', userConfig:[filename: '/vagrant/conf.json']
+			  }
+			}
         }
     }
 	/*post{ 
