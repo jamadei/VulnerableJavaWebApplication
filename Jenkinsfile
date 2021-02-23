@@ -14,21 +14,20 @@ pipeline {
 
             }
         }
+		
 		stage('Deploy to Docker Container') {
              steps {
 				 sh "cp target/vulnerablejavawebapp-0.0.1-SNAPSHOT.jar . &&docker build -t vjwwaa . && docker run -dp 9090:9090 vjwwaa"
              }
         }
+		
 		stage('ZAP scan') {
-				stage ('ZAP Dynamic Test'){
-					steps{
-						waitForStartup{
-						 build job:'ZAPvsVJWA',propagate:true, wait:true
-						}
-					}
-				}
+			steps{
+				 build job:'ZAPvsVJWA',propagate:true, wait:true
+			}
 		}
-        stage('Arachni Dynamic Test') {
+			
+		stage('Arachni Dynamic Test') {
         	steps{
         		 arachniScanner checks: '*', format: 'html', scope: [excludePathPattern: '', pageLimit: '3'], url: 'http://192.168.33.10:9090', userConfig:[filename: '/vagrant/conf.json']
         	}
@@ -51,9 +50,7 @@ def startupArachni() {
   arachni/arachni:latest   '
 }
 
-def stopArachni(){
-	sh 'docker stop $(docker ps -a -q --filter ancestor="arachni/arachni" --format="{{.ID}}")'
-}
+
 
 def mvn(def args) {
     def mvnHome = tool 'M3'
