@@ -50,7 +50,12 @@ pipeline {
 
 
 def startupArachni() {
-   sh 'docker start arachni'
+   sh 'docker start || arachni docker run -d \
+   -p 222:22 \
+   -p 7331:7331 \
+   -p 9292:9292 \
+   --name arachni \
+  arachni/arachni:latest   '
 }
 
 def stopArachni(){
@@ -78,7 +83,6 @@ def mvn(def args) {
     // Advice: don't define M2_HOME in general. Maven will autodetect its root fine.
     // See also
     // https://github.com/jenkinsci/pipeline-examples/blob/master/pipeline-examples/maven-and-jdk-specific-version/mavenAndJdkSpecificVersion.groovy
-    withEnv(["JAVA_HOME=${javaHome}", "PATH+MAVEN=${mvnHome}/bin:${env.JAVA_HOME}/bin"]) {
-        sh "${mvnHome}/bin/mvn ${args} --batch-mode -V -U -e -Dsurefire.useFile=false"
-    }
+    sh "${mvnHome}/bin/mvn ${args} --batch-mode -V -U -e -Dsurefire.useFile=false"
+    
 }
