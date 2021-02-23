@@ -23,7 +23,9 @@ pipeline {
 		
 		stage('ZAP scan') {
 			steps{
-				 build job:'ZAPvsVJWA',propagate:true, wait:true
+				waitForStartup{
+					build job:'ZAPvsVJWA',propagate:true, wait:true
+				}
 			}
 		}
 			
@@ -69,4 +71,11 @@ def mvn(def args) {
     // https://github.com/jenkinsci/pipeline-examples/blob/master/pipeline-examples/maven-and-jdk-specific-version/mavenAndJdkSpecificVersion.groovy
     sh "${mvnHome}/bin/mvn ${args} --batch-mode -V -U -e -Dsurefire.useFile=false"
     
+}
+
+
+def waitForStartup(body) {
+   sleep time:3, unit: 'MINUTES'
+   body()
+
 }
