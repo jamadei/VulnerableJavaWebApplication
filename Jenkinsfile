@@ -35,11 +35,11 @@ pipeline {
 			}
         }
     }
-	/*post{ 
+	post{ 
         always {
-            stopArachni() 
+            archiveArtifacts artifacts: *.zip
         }
-    }*/
+    }
 }
 
 
