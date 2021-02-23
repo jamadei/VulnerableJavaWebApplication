@@ -12,18 +12,37 @@ pipeline {
                 mvn 'test'
             }
         }
-	stage('Test with snyk') {
+	   stage('Test with snyk') {
              steps {
 		     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')
                        {
                          snykSecurity snykInstallation: 'Snyk1', snykTokenId: 'Snyk_token' 
 		       }
-              }
+             }
         }
-	stage('Continue after errors') {
-            steps {
-                sh 'echo stop here'
-            }
+		stage('Deploy to Docker Container') {
+             steps {
+				 sh "cp target/vulnerablejavawebapp-0.0.1-SNAPSHOT.jar . &&docker build -t vjwwaa . && docker run -dp 9090:9090 vjwwaa"
+             }
+        }
+		
+		stage('ZAP scan') {
+			steps{
+				sleep time:3, unit: 'MINUTES'
+				build job:'ZAPvsVJWA',propagate:true, wait:true
+				}
+		}
+			
+		stage('Arachni Dynamic Test') {
+        	steps{
+			     sleep time:1, unit: 'MINUTES'
+        		 arachniScanner checks: '*', format: 'html', scope: [excludePathPattern: '', pageLimit: '10'], url: 'http://192.168.33.10:9090', userConfig:[filename: '/vagrant/conf.json']
+			}
+        }
+    }
+	post{ 
+        always {
+            archiveArtifacts '**/target/*.zip'
         }
     }
 }
