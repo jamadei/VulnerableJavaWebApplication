@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+
+    stages {
+       
+		stage ('Shutdown Arachni Docker Container '){
+					steps{
+						stopArachni() 
+					} 
+		}
+	}
+}
+
+def stopArachni(){
+	sh 'docker stop $(docker ps -a -q --filter ancestor="arachni/arachni" --format="{{.ID}}")'
+}
+
+
+

@@ -19,8 +19,7 @@ pipeline {
 				 sh "cp target/vulnerablejavawebapp-0.0.1-SNAPSHOT.jar . &&docker build -t vjwwaa . && docker run -dp 9090:9090 vjwwaa"
              }
         }
-		stage('ZAP & Prepare for Arachni scan') {
-			parallel {
+		stage('ZAP scan') {
 				stage ('ZAP Dynamic Test'){
 					steps{
 						waitForStartup{
@@ -28,12 +27,6 @@ pipeline {
 						}
 					}
 				}
-				stage ('Startup Arachni Docker Container '){
-					steps{
-						startupArachni()
-					} 
-				}
-			}
 		}
         stage('Arachni Dynamic Test') {
         	steps{
@@ -41,11 +34,11 @@ pipeline {
         	}
         }
     }
-	post{ 
+	/*post{ 
         always {
             stopArachni() 
         }
-    }
+    }*/
 }
 
 
@@ -60,12 +53,6 @@ def startupArachni() {
 
 def stopArachni(){
 	sh 'docker stop $(docker ps -a -q --filter ancestor="arachni/arachni" --format="{{.ID}}")'
-}
-
-def waitForStartup(body) {
-   sleep time:3, unit: 'MINUTES'
-   body()
-
 }
 
 def mvn(def args) {
