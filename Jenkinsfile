@@ -28,9 +28,12 @@ pipeline {
 		
 		stage('ZAP scan') {
 			steps{
-				sleep time:3, unit: 'MINUTES'
-				build job:'ZAPvsVJWA',propagate:true, wait:true
+			 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')
+                {  
+					sleep time:3, unit: 'MINUTES'
+					build job:'ZAPvsVJWA',propagate:true, wait:true
 				}
+			}
 		}
 			
 		stage('Arachni Dynamic Test') {
