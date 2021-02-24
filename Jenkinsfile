@@ -39,7 +39,7 @@ pipeline {
 		stage('Arachni Dynamic Test') {
         	steps{
 			     sleep time:1, unit: 'MINUTES'
-        		 arachniScanner checks: '*', format: 'html', scope: [excludePathPattern: '', pageLimit: '10'], url: 'http://192.168.33.10:9090', userConfig:[filename: '/vagrant/conf.json']
+        		 arachniScanner checks: '*', format: 'html', scope: [excludePathPattern: '', pageLimit: '10'], url: 'http://192.168.33.10:9090', userConfig:[filename: '../conf.json']
 			}
         }
     }
