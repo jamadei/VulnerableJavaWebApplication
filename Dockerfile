@@ -10,7 +10,7 @@ WORKDIR /app
 RUN mvn install
 
 # Http port
-ENV PORT 9000
+ENV PORT 9090
 EXPOSE  $PORT
 
 # Executes spring boot's jar
